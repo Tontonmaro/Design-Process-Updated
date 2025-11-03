@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
+<<<<<<< HEAD
+  tags:
+  - Item
+=======
   tags: []
+>>>>>>> 1d95327af975aa3f22623a62e7d423d4fc2e271e
   layers:
   - Default
   - TransparentFX
@@ -11,7 +16,11 @@ TagManager:
   - 
   - Water
   - UI
+<<<<<<< HEAD
+  - Item
+=======
   - 
+>>>>>>> 1d95327af975aa3f22623a62e7d423d4fc2e271e
   - 
   - 
   - 
