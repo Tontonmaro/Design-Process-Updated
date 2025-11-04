@@ -1,10 +1,10 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using DG.Tweening;
 
 public class ItemSelect : MonoBehaviour
 {
@@ -29,15 +29,18 @@ public class ItemSelect : MonoBehaviour
     public GameObject price;
 
     [HideInInspector] public GameObject itemPrefab;
+    [HideInInspector] public GameObject cartItemPrefab;
 
     [SerializeField] SizeSelector sizeSelector;
+    [SerializeField] ShoppingCart cart;
+
+    [SerializeField] CanvasGroup error;
 
     // Start is called before the first frame update
     void Start()
     {
         initialPos = transform.localPosition;
         cam = Camera.main;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -52,10 +55,10 @@ public class ItemSelect : MonoBehaviour
             {
                 if (hitInfo.collider != null && hitInfo.collider.tag == "Item")
                 {
-                    objTransform = hitInfo.collider.transform;   
+                    objTransform = hitInfo.collider.transform;
+                    GameObject item = hitInfo.collider.gameObject;
                     if (hitInfo.distance <= 5f)
                     {
-                        GameObject item = hitInfo.collider.gameObject;
                         item.GetComponent<Outline>().enabled = true;
                         if (Input.GetMouseButtonDown(0))
                         {
@@ -76,6 +79,10 @@ public class ItemSelect : MonoBehaviour
                             subtitle.GetComponent<TextMeshProUGUI>().text = details.subtitle;
                             price.GetComponent<TextMeshProUGUI>().text = details.price;
                         }
+                    }
+                    else
+                    {
+                        item.GetComponent<Outline>().enabled = false;
                     }
                 }
                 else
@@ -146,6 +153,24 @@ public class ItemSelect : MonoBehaviour
             sizeSelector.buttons.Clear();
 
             Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
+
+    public void addToCart()
+    {
+        if (itemPrefab != null)
+        {
+            if (itemPrefab.GetComponent<ItemDetails>().chosenSize != "")
+            {
+                cart.cartItems.Add(Instantiate(itemPrefab, new Vector3(200, 200, 200), Quaternion.identity));
+                cart.addedToCartMsg();
+                error.DOFade(0f, 0.2f);
+                exit();
+            }
+            else
+            {
+                error.DOFade(1f, 0.2f);
+            }
         }
     }
 }
