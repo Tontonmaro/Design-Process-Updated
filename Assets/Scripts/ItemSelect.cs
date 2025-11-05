@@ -1,10 +1,11 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using DG.Tweening;
+using static UnityEditor.Progress;
 
 public class ItemSelect : MonoBehaviour
 {
@@ -28,16 +29,26 @@ public class ItemSelect : MonoBehaviour
     public GameObject subtitle;
     public GameObject price;
 
+    public CanvasGroup cartPanel;
+
     [HideInInspector] public GameObject itemPrefab;
+    [HideInInspector] public GameObject cartItemPrefab;
 
     [SerializeField] SizeSelector sizeSelector;
+    [SerializeField] ShoppingCart cart;
+    [SerializeField] OrderSummary summary;
+
+    [SerializeField] CanvasGroup error;
+
+    [SerializeField] TextMeshProUGUI totalPriceText;
 
     // Start is called before the first frame update
     void Start()
     {
         initialPos = transform.localPosition;
         cam = Camera.main;
-        Cursor.lockState = CursorLockMode.Locked;
+
+        infoPanel.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -52,13 +63,14 @@ public class ItemSelect : MonoBehaviour
             {
                 if (hitInfo.collider != null && hitInfo.collider.tag == "Item")
                 {
-                    objTransform = hitInfo.collider.transform;   
+                    objTransform = hitInfo.collider.transform;
+                    GameObject item = hitInfo.collider.gameObject;
                     if (hitInfo.distance <= 5f)
                     {
-                        GameObject item = hitInfo.collider.gameObject;
                         item.GetComponent<Outline>().enabled = true;
                         if (Input.GetMouseButtonDown(0))
                         {
+                            Cursor.lockState = CursorLockMode.Locked;
                             Cursor.lockState = CursorLockMode.None;
                             isLooking = true;
                             cameraPosTransform = objTransform.parent.GetChild(objTransform.GetSiblingIndex() + 1);
@@ -67,6 +79,7 @@ public class ItemSelect : MonoBehaviour
 
                             itemPrefab = Instantiate(item, new Vector3 (100, 100, 103), Quaternion.identity);
 
+                            infoPanel.gameObject.SetActive(true);
                             infoPanel.DOFade(1f, 0.2f);
 
                             sizeSelector.spawnButtons(itemPrefab);
@@ -74,8 +87,40 @@ public class ItemSelect : MonoBehaviour
                             ItemDetails details = item.GetComponent<ItemDetails>();
                             title.GetComponent<TextMeshProUGUI>().text = details.name;
                             subtitle.GetComponent<TextMeshProUGUI>().text = details.subtitle;
-                            price.GetComponent<TextMeshProUGUI>().text = details.price;
+                            price.GetComponent<TextMeshProUGUI>().text = ("$" + details.chosenPrice.ToString("F2"));
                         }
+                    }
+                    else
+                    {
+                        item.GetComponent<Outline>().enabled = false;
+                    }
+                }
+                else if(hitInfo.collider != null && hitInfo.collider.tag == "Checkout")
+                {
+                    objTransform = hitInfo.collider.transform;
+                    GameObject item = hitInfo.collider.gameObject;
+                    if (hitInfo.distance <= 5f)
+                    {
+                        item.GetComponent<Outline>().enabled = true;
+                        if (Input.GetMouseButtonDown(0) && !summary.spawned)
+                        {
+                            summary.spawned = true;
+                            Cursor.lockState = CursorLockMode.Locked;
+                            Cursor.lockState = CursorLockMode.None;
+                            cartPanel.gameObject.SetActive(true);
+                            cartPanel.DOFade(1f, 0.2f);
+                            float totalPrice = 0;
+                            for (int i = 0; i < cart.cartItems.Count; i++)
+                            {
+                                summary.spawnListings(cart.cartItems[i]);
+                                totalPrice += cart.cartItems[i].GetComponent<ItemDetails>().quantity * cart.cartItems[i].GetComponent<ItemDetails>().chosenPrice;
+                                totalPriceText.text = "$" + totalPrice.ToString("F2");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        item.GetComponent<Outline>().enabled = false;
                     }
                 }
                 else
@@ -132,7 +177,8 @@ public class ItemSelect : MonoBehaviour
             StartCoroutine(RotateBack());
             StartCoroutine(ReturnCamera());
 
-            infoPanel.DOFade(0f, 0.2f);
+            infoPanel.DOFade(0f, 0.2f)
+                .OnComplete(() => infoPanel.gameObject.SetActive(false));
 
             Destroy(itemPrefab);
             for (int i = 0; i < sizeSelector.buttons.Count; i++)
@@ -147,5 +193,31 @@ public class ItemSelect : MonoBehaviour
 
             Cursor.lockState = CursorLockMode.Locked;
         }
+    }
+
+    public void addToCart()
+    {
+        if (itemPrefab != null)
+        {
+            if (itemPrefab.GetComponent<ItemDetails>().chosenSize != "")
+            {
+                cart.cartItems.Add(Instantiate(itemPrefab, new Vector3(200, 200, 200), Quaternion.identity));
+                cart.addedToCartMsg();
+                error.DOFade(0f, 0.2f);
+                exit();
+            }
+            else
+            {
+                error.DOFade(1f, 0.2f);
+            }
+        }
+    }
+
+    public void exitCart()
+    {
+        summary.destroyListings();
+        cartPanel.DOFade(0f, 0.2f)
+            .OnComplete(() => cartPanel.gameObject.SetActive(false));
+        Cursor.lockState = CursorLockMode.Locked;
     }
 }
