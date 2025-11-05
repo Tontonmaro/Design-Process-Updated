@@ -23,7 +23,14 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Update()v
+        v
+        private void OnBecameVisible()
+    {
+        vv
+            v
+            v
+    }
     {
         if (itemSelect.isLooking != true)
         {
