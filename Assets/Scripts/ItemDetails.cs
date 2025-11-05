@@ -8,7 +8,7 @@ public class ItemDetails : MonoBehaviour
     public string subtitle;
     public string description;
     public string price;
-    public int quantity = 0;
+    public int quantity = 1;
     public string[] sizes;
     public string chosenSize;
 }
