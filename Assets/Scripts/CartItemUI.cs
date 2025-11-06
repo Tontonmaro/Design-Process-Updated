@@ -51,12 +51,12 @@ public class CartItemUI : MonoBehaviour
 
         Destroy(linkedItem.gameObject);
         Destroy(gameObject);
-        itemSelect.refreshPrice();
+        itemSelect.refreshPrice(itemSelect.totalPriceText);
     }
 
     void UpdateUI()
     {
         quantityText.text = linkedItem.quantity.ToString();
-        itemSelect.refreshPrice();
+        itemSelect.refreshPrice(itemSelect.totalPriceText);
     }
 }

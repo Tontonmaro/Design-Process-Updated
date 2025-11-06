@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
 public class OrderSummary : MonoBehaviour
 {
@@ -12,7 +13,12 @@ public class OrderSummary : MonoBehaviour
     public List<GameObject> listings = new List<GameObject>();
 
     [SerializeField] ItemSelect select;
+    [SerializeField] Checkout checkout;
+    [SerializeField] ShoppingCart cart;
+    [SerializeField] CanvasGroup checkoutPanel;
     ItemDetails details;
+
+    [SerializeField] TextMeshProUGUI totalPriceText;
 
     public bool spawned = false;
     public void spawnListings(GameObject prefab)
@@ -40,5 +46,27 @@ public class OrderSummary : MonoBehaviour
             Destroy(listings[i]);
         }
         spawned = false;
+    }
+
+    public void proceedToCheckout()
+    {
+        checkoutPanel.gameObject.SetActive(true);
+        checkoutPanel.DOFade(1f, 0.2f)
+            .OnComplete(() => this.gameObject.GetComponent<CanvasGroup>().alpha = 0f)
+            .OnComplete(() => this.gameObject.SetActive(false));
+        for (int i = 0; i < cart.cartItems.Count; i++)
+        {
+            checkout.spawnListings(cart.cartItems[i]);
+        }
+        select.refreshPrice(totalPriceText);
+    }
+
+    public void returnToSummary()
+    {
+        checkoutPanel.DOFade(1f, 0.2f)
+            .OnComplete(() => checkoutPanel.gameObject.SetActive(false));
+        this.gameObject.SetActive(true);
+        this.gameObject.GetComponent<CanvasGroup>().DOFade(1f, 0.2f)
+            .OnComplete(() => checkout.destroyListings());
     }
 }

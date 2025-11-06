@@ -39,7 +39,7 @@ public class ItemSelect : MonoBehaviour
 
     [SerializeField] CanvasGroup error;
 
-    [SerializeField] TextMeshProUGUI totalPriceText;
+    public TextMeshProUGUI totalPriceText;
 
     // Start is called before the first frame update
     void Start()
@@ -114,7 +114,7 @@ public class ItemSelect : MonoBehaviour
                                 summary.spawnListings(cart.cartItems[i]);
                                 //totalPrice += cart.cartItems[i].GetComponent<ItemDetails>().quantity * cart.cartItems[i].GetComponent<ItemDetails>().chosenPrice;
                                 //totalPriceText.text = "$" + totalPrice.ToString("F2");
-                                refreshPrice();
+                                refreshPrice(totalPriceText);
                             }
                         }
                     }
@@ -232,7 +232,7 @@ public class ItemSelect : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-    public void refreshPrice()
+    public void refreshPrice(TextMeshProUGUI text)
     {
         float total = 0f;
         foreach(GameObject itemObj in cart.cartItems)
@@ -243,6 +243,6 @@ public class ItemSelect : MonoBehaviour
                 total += d.chosenPrice * d.quantity;
             }
         }
-        totalPriceText.text = "$" + total.ToString("F2");   
+        text.text = "$" + total.ToString("F2");   
     }
 }
