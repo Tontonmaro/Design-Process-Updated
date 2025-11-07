@@ -22,7 +22,10 @@ public class ChangeQuantity : MonoBehaviour
         if (itemSelect.isLooking)
         {
             itemPrefab = itemSelect.itemPrefab;
-            itemDetails = itemPrefab.GetComponent<ItemDetails>();
+            if (itemPrefab != null)
+            {
+                itemDetails = itemPrefab.GetComponent<ItemDetails>();
+            }
         }
     }
 

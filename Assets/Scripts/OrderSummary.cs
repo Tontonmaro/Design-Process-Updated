@@ -15,9 +15,14 @@ public class OrderSummary : MonoBehaviour
     [SerializeField] ItemSelect select;
     [SerializeField] Checkout checkout;
     [SerializeField] ShoppingCart cart;
+    [SerializeField] BuyNowCart buyNowCart;
     [SerializeField] CanvasGroup checkoutPanel;
     ItemDetails details;
 
+    [SerializeField] TextMeshProUGUI error;
+
+    [SerializeField] TextMeshProUGUI subtotalPriceText;
+    [SerializeField] TextMeshProUGUI subtotalQtyText;
     [SerializeField] TextMeshProUGUI totalPriceText;
 
     public bool spawned = false;
@@ -50,19 +55,51 @@ public class OrderSummary : MonoBehaviour
 
     public void proceedToCheckout()
     {
-        checkoutPanel.gameObject.SetActive(true);
-        checkoutPanel.DOFade(1f, 0.2f)
-            .OnComplete(() => this.gameObject.GetComponent<CanvasGroup>().alpha = 0f)
-            .OnComplete(() => this.gameObject.SetActive(false));
-        for (int i = 0; i < cart.cartItems.Count; i++)
+        int totalQty = 0;
+        if (!select.boughtNow)
         {
-            checkout.spawnListings(cart.cartItems[i]);
+            if (cart.cartItems.Count > 0)
+            {
+                error.alpha = 0;
+                checkoutPanel.gameObject.SetActive(true);
+                checkoutPanel.DOFade(1f, 0.2f)
+                    .OnComplete(() => this.gameObject.GetComponent<CanvasGroup>().alpha = 0f)
+                    .OnComplete(() => this.gameObject.SetActive(false));
+                for (int i = 0; i < cart.cartItems.Count; i++)
+                {
+                    checkout.spawnListings(cart.cartItems[i]);
+                    totalQty += cart.cartItems[i].GetComponent<ItemDetails>().quantity;
+                }
+                select.refreshPrice(subtotalPriceText);
+                select.refreshPrice(totalPriceText);
+                subtotalQtyText.text = "Subtotal (" + totalQty + " items):";
+            }
+            else
+            {
+                error.DOFade(1f, 0.2f);
+            }
         }
-        select.refreshPrice(totalPriceText);
+        else
+        {
+            error.alpha = 0;
+            checkoutPanel.gameObject.SetActive(true);
+            checkoutPanel.DOFade(1f, 0.2f)
+                .OnComplete(() => this.gameObject.GetComponent<CanvasGroup>().alpha = 0f)
+                .OnComplete(() => this.gameObject.SetActive(false));
+            for (int i = 0; i < buyNowCart.buyNowItems.Count; i++)
+            {
+                checkout.spawnListings(buyNowCart.buyNowItems[i]);
+                totalQty += buyNowCart.buyNowItems[i].GetComponent<ItemDetails>().quantity;
+            }
+            select.refreshPrice(subtotalPriceText);
+            select.refreshPrice(totalPriceText);
+            subtotalQtyText.text = "Subtotal (" + totalQty + " items):";
+        }
     }
 
     public void returnToSummary()
     {
+        checkout.clearErrors();
         checkoutPanel.DOFade(1f, 0.2f)
             .OnComplete(() => checkoutPanel.gameObject.SetActive(false));
         this.gameObject.SetActive(true);

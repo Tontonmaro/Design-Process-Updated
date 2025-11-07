@@ -35,11 +35,15 @@ public class ItemSelect : MonoBehaviour
 
     [SerializeField] SizeSelector sizeSelector;
     [SerializeField] ShoppingCart cart;
+    [SerializeField] BuyNowCart buyNowCart;
     [SerializeField] public OrderSummary summary;
 
     [SerializeField] CanvasGroup error;
 
     public TextMeshProUGUI totalPriceText;
+    public TextMeshProUGUI emptyError;
+
+    public bool boughtNow = false;
 
     // Start is called before the first frame update
     void Start()
@@ -72,9 +76,6 @@ public class ItemSelect : MonoBehaviour
                             Cursor.lockState = CursorLockMode.Locked;
                             Cursor.lockState = CursorLockMode.None;
                             isLooking = true;
-                            cameraPosTransform = objTransform.parent.GetChild(objTransform.GetSiblingIndex() + 1);
-                            cameraMovement = MoveCamera();
-                            StartCoroutine(cameraMovement);
 
                             itemPrefab = Instantiate(item, new Vector3 (100, 100, 103), Quaternion.identity);
 
@@ -103,19 +104,7 @@ public class ItemSelect : MonoBehaviour
                         item.GetComponent<Outline>().enabled = true;
                         if (Input.GetMouseButtonDown(0) && !summary.spawned)
                         {
-                            summary.spawned = true;
-                            Cursor.lockState = CursorLockMode.Locked;
-                            Cursor.lockState = CursorLockMode.None;
-                            cartPanel.gameObject.SetActive(true);
-                            cartPanel.DOFade(1f, 0.2f);
-                            //float totalPrice = 0;
-                            for (int i = 0; i < cart.cartItems.Count; i++)
-                            {
-                                summary.spawnListings(cart.cartItems[i]);
-                                //totalPrice += cart.cartItems[i].GetComponent<ItemDetails>().quantity * cart.cartItems[i].GetComponent<ItemDetails>().chosenPrice;
-                                //totalPriceText.text = "$" + totalPrice.ToString("F2");
-                                refreshPrice(totalPriceText);
-                            }
+                            enterCart();
                         }
                     }
                     else
@@ -134,48 +123,48 @@ public class ItemSelect : MonoBehaviour
         }
     }
 
-    IEnumerator MoveCamera()
-    {
-        float time = 0;
-        while (time < 1)
-        {
-            cam.transform.position = Vector3.Lerp(cam.transform.position, cameraPosTransform.position, time);
-            cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, Quaternion.identity, time);
-            time += Time.deltaTime;
-            yield return null;
-        }
-    }
+    //IEnumerator MoveCamera()
+    //{
+    //    float time = 0;
+    //    while (time < 1)
+    //    {
+    //        cam.transform.position = Vector3.Lerp(cam.transform.position, cameraPosTransform.position, time);
+    //        cam.transform.rotation = Quaternion.Lerp(cam.transform.rotation, Quaternion.identity, time);
+    //        time += Time.deltaTime;
+    //        yield return null;
+    //    }
+    //}
 
-    IEnumerator RotateBack()
-    {
-        float time = 0;
-        while (time < 1)
-        {
-            objTransform.rotation = Quaternion.Lerp(objTransform.rotation, Quaternion.identity, time);
-            time += Time.deltaTime;
-            yield return null;
-        }
-    }
+    //IEnumerator RotateBack()
+    //{
+    //    float time = 0;
+    //    while (time < 1)
+    //    {
+    //        objTransform.rotation = Quaternion.Lerp(objTransform.rotation, Quaternion.identity, time);
+    //        time += Time.deltaTime;
+    //        yield return null;
+    //    }
+    //}
 
-    IEnumerator ReturnCamera()
-    {
-        float time = 0;
-        while (time < 1)
-        {
-            cam.transform.localPosition = Vector3.Lerp(cam.transform.localPosition, initialPos, time);
-            time += Time.deltaTime;
-            yield return null;
-        }
-    }
+    //IEnumerator ReturnCamera()
+    //{
+    //    float time = 0;
+    //    while (time < 1)
+    //    {
+    //        cam.transform.localPosition = Vector3.Lerp(cam.transform.localPosition, initialPos, time);
+    //        time += Time.deltaTime;
+    //        yield return null;
+    //    }
+    //}
 
     public void exit()
     {
         if (isLooking)
         {
             isLooking = false;
-            StopCoroutine(cameraMovement);
-            StartCoroutine(RotateBack());
-            StartCoroutine(ReturnCamera());
+            //StopCoroutine(cameraMovement);
+            //StartCoroutine(RotateBack());
+            //StartCoroutine(ReturnCamera());
 
             infoPanel.DOFade(0f, 0.2f)
                 .OnComplete(() => infoPanel.gameObject.SetActive(false));
@@ -224,23 +213,98 @@ public class ItemSelect : MonoBehaviour
         }
     }
 
+    public void enterCart()
+    {
+        summary.spawned = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.None;
+        cartPanel.gameObject.SetActive(true);
+        cartPanel.DOFade(1f, 0.2f);
+        for (int i = 0; i < cart.cartItems.Count; i++)
+        {
+            summary.spawnListings(cart.cartItems[i]);
+            refreshPrice(totalPriceText);
+        }
+        if(cart.cartItems.Count == 0)
+        {
+            refreshPrice(totalPriceText);
+        }
+    }
+
     public void exitCart()
     {
         summary.destroyListings();
+        emptyError.alpha = 0;
         cartPanel.DOFade(0f, 0.2f)
             .OnComplete(() => cartPanel.gameObject.SetActive(false));
+        buyNowCart.buyNowItems.Clear();
+        boughtNow = false;
+        isLooking = false;
         Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void buyNow()
+    {
+        boughtNow = true;
+        if (itemPrefab != null)
+        {
+            if (itemPrefab.GetComponent<ItemDetails>().chosenSize != "")
+            {
+                foreach (GameObject itemObj in cart.cartItems)
+                {
+                    ItemDetails existingDetails = itemObj.GetComponent<ItemDetails>();
+                    ItemDetails newDetails = itemPrefab.GetComponent<ItemDetails>();
+                    if (existingDetails.name == newDetails.name && existingDetails.chosenSize == newDetails.chosenSize)
+                    {
+                        existingDetails.quantity += newDetails.quantity;
+                        exit();
+                        return;
+                    }
+                }
+                buyNowCart.buyNowItems.Add(Instantiate(itemPrefab, new Vector3(200, 200, 200), Quaternion.identity));
+                exit();
+                isLooking = true;
+                summary.spawned = true;
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.lockState = CursorLockMode.None;
+                cartPanel.gameObject.SetActive(true);
+                cartPanel.DOFade(1f, 0.2f);
+                for (int i = 0; i < buyNowCart.buyNowItems.Count; i++)
+                {
+                    summary.spawnListings(buyNowCart.buyNowItems[i]);
+                    refreshPrice(totalPriceText);
+                }
+            }
+            else
+            {
+                error.DOFade(1f, 0.2f);
+            }
+        }
     }
 
     public void refreshPrice(TextMeshProUGUI text)
     {
         float total = 0f;
-        foreach(GameObject itemObj in cart.cartItems)
+        if (!boughtNow)
         {
-            if (itemObj != null)
+            foreach (GameObject itemObj in cart.cartItems)
             {
-                ItemDetails d = itemObj.GetComponent<ItemDetails>();
-                total += d.chosenPrice * d.quantity;
+                if (itemObj != null)
+                {
+                    ItemDetails d = itemObj.GetComponent<ItemDetails>();
+                    total += d.chosenPrice * d.quantity;
+                }
+            }
+        }
+        else
+        {
+            foreach (GameObject itemObj in buyNowCart.buyNowItems)
+            {
+                if (itemObj != null)
+                {
+                    ItemDetails d = itemObj.GetComponent<ItemDetails>();
+                    total += d.chosenPrice * d.quantity;
+                }
             }
         }
         text.text = "$" + total.ToString("F2");   

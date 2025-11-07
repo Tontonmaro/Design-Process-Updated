@@ -24,7 +24,10 @@ public class Quantity : MonoBehaviour
         if (select.isLooking)
         {
             itemPrefab = select.itemPrefab;
-            quantity.text = itemPrefab.GetComponent<ItemDetails>().quantity.ToString();
+            if (itemPrefab != null)
+            {
+                quantity.text = itemPrefab.GetComponent<ItemDetails>().quantity.ToString();
+            }
         }
     }
 }

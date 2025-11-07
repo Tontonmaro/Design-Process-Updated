@@ -24,6 +24,8 @@ public class CustomButtonHandler : MonoBehaviour, IPointerDownHandler
                 if (button.GetComponentInChildren<TextMeshProUGUI>().text == "Add to Cart")
                 {
                     select.addToCart();
+                    button.interactable = false;
+                    StartCoroutine(enableButtonAfterDelay(button));
                 }
                 else if(button.GetComponentInChildren<TextMeshProUGUI>().text == "Close Tutorial")
                 {
@@ -37,9 +39,18 @@ public class CustomButtonHandler : MonoBehaviour, IPointerDownHandler
                 {
                     select.exitCart();
                 }
+                else if (button.GetComponentInChildren<TextMeshProUGUI>().text == "Buy Now")
+                {
+                    select.buyNow();
+                    button.interactable = false;
+                    StartCoroutine(enableButtonAfterDelay(button));
+                }
             }
-
-
         }
+    }
+    IEnumerator enableButtonAfterDelay(Button button)
+    {
+        yield return new WaitForSeconds(0.5f);
+        button.interactable = true;
     }
 }

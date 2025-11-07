@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Text.RegularExpressions;
 
 public class Checkout : MonoBehaviour
 {
@@ -15,6 +16,8 @@ public class Checkout : MonoBehaviour
     ItemDetails details;
 
     [SerializeField] CanvasGroup paymentPanel;
+    [SerializeField] PaymentDetailsHandler paymentDetails;
+    [SerializeField] TextMeshProUGUI[] errors;
     public void spawnListings(GameObject prefab)
     {
         if (prefab != null)
@@ -42,9 +45,74 @@ public class Checkout : MonoBehaviour
 
     public void proceedToPayment()
     {
+        bool hasError = false;
+        string emailPattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
+        if (!Regex.IsMatch(paymentDetails.emailAddress.text, emailPattern))
+        {
+            error(errors[0]);
+            hasError = true;
+        }
+        if (string.IsNullOrEmpty(paymentDetails.country.text))
+        {
+            error(errors[1]);
+            hasError = true;
+        }
+        if (string.IsNullOrEmpty(paymentDetails.firstName.text))
+        {
+            error(errors[2]);
+            hasError = true;
+        }
+        if (string.IsNullOrEmpty(paymentDetails.lastName.text))
+        {
+            error(errors[3]);
+            hasError = true;
+        }
+        if (string.IsNullOrEmpty(paymentDetails.address.text))
+        {
+            error(errors[4]);
+            hasError = true;
+        }
+        if (string.IsNullOrEmpty(paymentDetails.apartment.text))
+        {
+            error(errors[5]);
+            hasError = true;
+        }
+        if (!Regex.IsMatch(paymentDetails.postalCode.text, @"^\d{6}$"))
+        {
+            error(errors[6]);
+            hasError = true;
+        }
+        if (!paymentDetails.toggleGrp.AnyTogglesOn())
+        {
+            error(errors[7]);
+            hasError = true;
+        }
+        if (hasError)
+        {
+            return;
+        }
+        clearErrors();
+        paymentDetails.resetInputFields();
         paymentPanel.gameObject.SetActive(true);
         paymentPanel.DOFade(1f, 0.2f)
             .OnComplete(() => this.gameObject.GetComponent<CanvasGroup>().alpha = 0f)
             .OnComplete(() => this.gameObject.SetActive(false));
+    }
+
+    void error(TextMeshProUGUI errorMsg)
+    {
+        for(int i = 0; i < errors.Length; i++)
+        {
+            errors[i].alpha = 0f;
+        }
+        errorMsg.DOFade(1f, 0.2f);
+    }
+
+    public void clearErrors()
+    {
+        for (int i = 0; i < errors.Length; i++)
+        {
+            errors[i].alpha = 0f;
+        }
     }
 }
