@@ -59,10 +59,6 @@ public class MusicPlayer : MonoBehaviour
                 playing = StartCoroutine(PlayPlaylist());
                 tutorial = false;
             }
-            else
-            {
-                Debug.Log("already playing!");
-            }
         }
         if (Input.GetKeyDown(KeyCode.M) && !select.inMenu)
         {
