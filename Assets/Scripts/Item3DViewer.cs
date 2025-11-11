@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class Item3DViewer : MonoBehaviour, IDragHandler
+public class Item3DViewer : MonoBehaviour, IDragHandler, IBeginDragHandler
 {
     GameObject itemPrefab;
     Camera cam;
@@ -26,6 +26,7 @@ public class Item3DViewer : MonoBehaviour, IDragHandler
     Vector3 initialPos;
     Vector3 initialScale;
     Vector3 initialBtnPos;
+    Vector2 lastMousePos;
     [SerializeField] Image zoomBG;
     [SerializeField] GameObject zoomBtn;
 
@@ -67,16 +68,44 @@ public class Item3DViewer : MonoBehaviour, IDragHandler
 
     public void OnDrag(PointerEventData eventData)
     {
+        //isDragging = true;
+        //if(tutorial != null)
+        //{
+        //    tutorial.SetActive(false);
+        //}
+        //itemPrefab = select.itemPrefab;
+        //if (itemPrefab != null)
+        //{
+        //    itemPrefab.transform.eulerAngles += new Vector3(eventData.delta.y, -eventData.delta.x);
+        //}
         isDragging = true;
-        if(tutorial != null)
-        {
+
+        if (tutorial != null)
             tutorial.SetActive(false);
-        }
+
         itemPrefab = select.itemPrefab;
-        if (itemPrefab != null)
+        if (itemPrefab == null)
+            return;
+
+        // Smooth rotation based on actual mouse movement
+        if (eventData.dragging)
         {
-            itemPrefab.transform.eulerAngles += new Vector3(eventData.delta.y, -eventData.delta.x);
+            Vector3 delta = eventData.position - lastMousePos;
+
+            float rotX = delta.y * 0.3f;
+            float rotY = -delta.x * 0.3f;
+
+            // Rotate smoothly in world space
+            itemPrefab.transform.Rotate(Vector3.up, rotY, Space.World);
+            itemPrefab.transform.Rotate(Vector3.right, rotX, Space.World);
         }
+
+        lastMousePos = eventData.position;
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        lastMousePos = eventData.position;
     }
 
     IEnumerator fadeInTutorial(float duration, TextMeshProUGUI targetText)

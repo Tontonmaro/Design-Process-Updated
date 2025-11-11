@@ -55,8 +55,11 @@ public class PlayerMovement : MonoBehaviour
         if (itemSelect.isLooking || tutorial.inTutorial || itemSelect.summary.spawned)
             return;
 
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        float mouseX = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+
+        if (Mathf.Abs(mouseX) < 0.001f) mouseX = 0f;
+        if (Mathf.Abs(mouseY) < 0.001f) mouseY = 0f;
 
         // Rotate player horizontally
         transform.Rotate(Vector3.up * mouseX);
@@ -79,8 +82,8 @@ public class PlayerMovement : MonoBehaviour
 
         // Apply speed
         float speed = moveSpeed;
-        if (Input.GetKey(KeyCode.LeftShift))
-            speed *= sprintMultiplier;
+        //if (Input.GetKey(KeyCode.LeftShift))
+        //    speed *= sprintMultiplier;
 
         // Ground check & gravity
         if (controller.isGrounded && velocity.y < 0)

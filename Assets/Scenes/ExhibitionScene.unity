@@ -1822,12 +1822,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 0.67
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -8404,7 +8404,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press C to access your shopping cart
+  m_text: Press <b>C</b> to access your shopping cart
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7a2884ad655f0474482db08f76c5d3c2, type: 2}
   m_sharedMaterial: {fileID: -9216753230836563836, guid: 7a2884ad655f0474482db08f76c5d3c2, type: 2}
@@ -18395,7 +18395,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.134
+  m_Volume: 0.299
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -18954,7 +18954,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Use the WASD keys to move around
+  m_text: Use the <b>WASD</b> keys to move around
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7a2884ad655f0474482db08f76c5d3c2, type: 2}
   m_sharedMaterial: {fileID: -9216753230836563836, guid: 7a2884ad655f0474482db08f76c5d3c2, type: 2}
@@ -19476,7 +19476,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press M to mute music
+  m_text: Press  <b>M</b> to mute music
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7a2884ad655f0474482db08f76c5d3c2, type: 2}
   m_sharedMaterial: {fileID: -9216753230836563836, guid: 7a2884ad655f0474482db08f76c5d3c2, type: 2}
@@ -24209,7 +24209,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Press Spacebar to jump
+  m_text: Press <b>Spacebar</b> to jump
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7a2884ad655f0474482db08f76c5d3c2, type: 2}
   m_sharedMaterial: {fileID: -9216753230836563836, guid: 7a2884ad655f0474482db08f76c5d3c2, type: 2}
@@ -26354,6 +26354,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bba16b4f81e5f2546994a0671ed48a14, type: 3}
   - {fileID: 8300000, guid: 0044c36e77db1d644b25ae20b3553b7d, type: 3}
   - {fileID: 8300000, guid: f7a87ef221d39944dbe73a586a4025a1, type: 3}
+  - {fileID: 8300000, guid: bdcf906d85d6b55488eebfee0def8339, type: 3}
   playlistWet:
   - {fileID: 8300000, guid: 95f0aadec8db8f54e9ef5e14f3455847, type: 3}
   - {fileID: 8300000, guid: f5e8dbe3cece0ce4eace79a98234b9cf, type: 3}
@@ -26362,6 +26363,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 37ec13c1de7eae14386d11776a6ceb8b, type: 3}
   - {fileID: 8300000, guid: 5f91a267dbcb8bd489ac79e24b11819d, type: 3}
   - {fileID: 8300000, guid: c016803b54c683d4287c13ec7706e46a, type: 3}
+  - {fileID: 8300000, guid: ab08692ebe247f947b724caad419e96f, type: 3}
   songInfoCanvasGroup: {fileID: 1711787803}
   songTitleText: {fileID: 1091285748}
   fadeTime: 1
@@ -35706,7 +35708,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Left click on an object while looking at it to view more details
+  m_text: <b>Left click</b> on an object while looking at it to view more details
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7a2884ad655f0474482db08f76c5d3c2, type: 2}
   m_sharedMaterial: {fileID: -9216753230836563836, guid: 7a2884ad655f0474482db08f76c5d3c2, type: 2}

@@ -107,8 +107,11 @@ public class MusicPlayer : MonoBehaviour
             drySource.time = 0f;
             wetSource.time = 0f;
 
-            drySource.Play();
-            wetSource.Play();
+            //drySource.Play();
+            //wetSource.Play();
+            double startTime = AudioSettings.dspTime + 0.1; // start both 0.1s in the future
+            drySource.PlayScheduled(startTime);
+            wetSource.PlayScheduled(startTime);
 
             ShowSongInfo(dryClip.name);
 
