@@ -85,7 +85,7 @@ public class ItemSelect : MonoBehaviour
                     if (hitInfo.distance <= 5f)
                     {
                         item.GetComponent<Outline>().enabled = true;
-                        if (Input.GetMouseButtonDown(0))
+                        if (Input.GetMouseButtonDown(0) && !inMenu)
                         {
                             Cursor.lockState = CursorLockMode.Locked;
                             Cursor.lockState = CursorLockMode.None;
@@ -109,7 +109,7 @@ public class ItemSelect : MonoBehaviour
                         item.GetComponent<Outline>().enabled = false;
                     }
                 }
-                else if(hitInfo.collider != null && hitInfo.collider.tag == "Checkout")
+                else if(hitInfo.collider != null && hitInfo.collider.tag == "Checkout" && !inMenu)
                 {
                     objTransform = hitInfo.collider.transform;
                     GameObject item = hitInfo.collider.gameObject;

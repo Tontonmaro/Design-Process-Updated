@@ -97,8 +97,8 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 0}
+    m_HighlightedColor: {r: 1, g: 1, b: 1, a: 0}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
@@ -197,6 +197,7 @@ MonoBehaviour:
   textRevealDelay: 0
   blindBoxRollSFX: {fileID: 8300000, guid: 056da41f2a579fb48867714e3a8b4bc1, type: 3}
   audioSource: {fileID: 0}
+  sfxPlayer: {fileID: 0}
 --- !u!114 &3113549908010341521
 MonoBehaviour:
   m_ObjectHideFlags: 0
