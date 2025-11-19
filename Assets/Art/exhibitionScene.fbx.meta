@@ -175,10 +175,10 @@ ModelImporter:
       name: wheel_MAT1
     second: {fileID: 2100000, guid: 16fc73e9a2ac61e45bf71fc6cfcd4856, type: 2}
   materials:
-    materialImportMode: 2
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
-    materialLocation: 1
+    materialLocation: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
