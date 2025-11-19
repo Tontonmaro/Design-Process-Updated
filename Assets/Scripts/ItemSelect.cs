@@ -90,8 +90,11 @@ public class ItemSelect : MonoBehaviour
                     }
                     if (hitInfo.distance <= 5f)
                     {
-                        item.GetComponent<Outline>().enabled = true;
-                        currentOutline = item.GetComponent<Outline>();
+                        if (item.GetComponent<Outline>() != null)
+                        {
+                            item.GetComponent<Outline>().enabled = true;
+                            currentOutline = item.GetComponent<Outline>();
+                        }
                         if (Input.GetMouseButtonDown(0) && !inMenu)
                         {
                             Cursor.lockState = CursorLockMode.Locked;
@@ -113,7 +116,10 @@ public class ItemSelect : MonoBehaviour
                     }
                     else
                     {
-                        item.GetComponent<Outline>().enabled = false;
+                        if (item.GetComponent<Outline>() != null)
+                        {
+                            item.GetComponent<Outline>().enabled = false;
+                        }
                     }
                 }
                 else if(hitInfo.collider != null && hitInfo.collider.tag == "Checkout" && !inMenu)
@@ -135,7 +141,7 @@ public class ItemSelect : MonoBehaviour
                 }
                 else
                 {
-                    if (objTransform != null)
+                    if (objTransform != null && objTransform.gameObject.GetComponent<Outline>() != null)
                     {
                         objTransform.gameObject.GetComponent<Outline>().enabled = false;
                     }
