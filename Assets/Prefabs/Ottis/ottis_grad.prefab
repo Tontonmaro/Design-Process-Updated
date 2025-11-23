@@ -72,6 +72,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ottis_grad
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 804970f24975a1d40846cf232d3f4f75, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

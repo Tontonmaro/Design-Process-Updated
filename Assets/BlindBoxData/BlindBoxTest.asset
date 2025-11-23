@@ -14,15 +14,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boxName: Box 1
   rewards:
-  - rewardName: Reward #1
-    rewardImage: {fileID: 21300000, guid: 1c09570b3ef6e204587f295d61f9535b, type: 3}
-    rewardPrefab: {fileID: 5363943220705842764, guid: db7bd9fd4e2805e4cbdd22c005938a08, type: 3}
-    chance: 0.33
-  - rewardName: Reward #2
-    rewardImage: {fileID: 21300000, guid: 1c09570b3ef6e204587f295d61f9535b, type: 3}
-    rewardPrefab: {fileID: 5363943220705842764, guid: db7bd9fd4e2805e4cbdd22c005938a08, type: 3}
-    chance: 0.33
-  - rewardName: Reward #3
-    rewardImage: {fileID: 21300000, guid: 1c09570b3ef6e204587f295d61f9535b, type: 3}
-    rewardPrefab: {fileID: 5363943220705842764, guid: db7bd9fd4e2805e4cbdd22c005938a08, type: 3}
-    chance: 0.33
+  - rewardName: Ded Ottis
+    rewardImage: {fileID: 21300000, guid: cc9dda3e795432844a6f167f311d7612, type: 3}
+    rewardPrefab: {fileID: 1768517455377240879, guid: b977731c40f4cc649be4e8160d49ce5a, type: 3}
+    chance: 0.16
+  - rewardName: Depressed Ottis
+    rewardImage: {fileID: 21300000, guid: 22c65dd455b09da429b56ffb9f7d45ae, type: 3}
+    rewardPrefab: {fileID: 1199847218525752539, guid: 2a0457df07c7b2a4d9a2242ca1cb01df, type: 3}
+    chance: 0.16
+  - rewardName: Ottis Grad
+    rewardImage: {fileID: 21300000, guid: af733b96aed395a4cb89ef0259c91743, type: 3}
+    rewardPrefab: {fileID: 7640684534885435386, guid: 5dcc1135afea4ed4e87ae61c0470bea7, type: 3}
+    chance: 0.16
+  - rewardName: Ottis & Friends
+    rewardImage: {fileID: 21300000, guid: 0041175fce5053345a0d2f339bed96ff, type: 3}
+    rewardPrefab: {fileID: 2602454346860339030, guid: bb354a74c9452254eb90206093963f3f, type: 3}
+    chance: 0.16
+  - rewardName: Rubbish Ottis
+    rewardImage: {fileID: 21300000, guid: 7f44017ed6d10db4fb5037d663968b75, type: 3}
+    rewardPrefab: {fileID: 3612994412223713434, guid: f67479ff671710e4bb8894b2b1163b82, type: 3}
+    chance: 0.16
+  - rewardName: Sleeping Ottis
+    rewardImage: {fileID: 21300000, guid: 292f4fb09901c3a4382e7a3a25a1a3e1, type: 3}
+    rewardPrefab: {fileID: 878938192607357969, guid: a04221a59e994aa44b2737b931d54ea9, type: 3}
+    chance: 0.16

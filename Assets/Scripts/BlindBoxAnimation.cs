@@ -52,6 +52,7 @@ public class BlindBoxAnimation : MonoBehaviour
         // Set reward sprite early so reveal shows correct sprite
         if (rewardImage != null)
             rewardImage.sprite = rewardSprite;
+            rewardImage.preserveAspect = true;
         if (rewardText != null)
             rewardText.text = rewardName;
 

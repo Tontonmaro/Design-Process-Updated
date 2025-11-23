@@ -105,6 +105,8 @@ public class OrderSummary : MonoBehaviour
                 error.DOFade(1f, 0.2f);
             }
         }
+
+        this.gameObject.SetActive(false);
     }
 
     public void returnToSummary()

@@ -109,9 +109,20 @@ public class MusicPlayer : MonoBehaviour
 
             //drySource.Play();
             //wetSource.Play();
-            double startTime = AudioSettings.dspTime + 0.1; // start both 0.1s in the future
-            drySource.PlayScheduled(startTime);
-            wetSource.PlayScheduled(startTime);
+
+            //double startTime = AudioSettings.dspTime + 0.1; // start both 0.1s in the future
+            //drySource.PlayScheduled(startTime);
+            //wetSource.PlayScheduled(startTime);
+
+            drySource.Play();
+            wetSource.Play();
+
+            // Hard-sync on start
+            wetSource.timeSamples = drySource.timeSamples;
+
+            // Begin per-frame resync for a short time
+            StartCoroutine(ResyncForWebGL());
+
 
             ShowSongInfo(dryClip.name);
 
@@ -172,6 +183,23 @@ public class MusicPlayer : MonoBehaviour
         {
             t += Time.deltaTime;
             songInfoCanvasGroup.alpha = Mathf.Lerp(1, 0, t / fadeTime);
+            yield return null;
+        }
+    }
+
+    IEnumerator ResyncForWebGL()
+    {
+        // WebGL sometimes drifts for the first ~0.1s
+        // so we repeatedly force alignment until both stabilize
+        float syncDuration = 0.15f;
+        float timer = 0f;
+
+        while (timer < syncDuration)
+        {
+            if (drySource.isPlaying && wetSource.isPlaying)
+                wetSource.timeSamples = drySource.timeSamples;
+
+            timer += Time.deltaTime;
             yield return null;
         }
     }

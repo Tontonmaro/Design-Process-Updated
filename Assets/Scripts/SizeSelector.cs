@@ -44,7 +44,7 @@ public class SizeSelector : MonoBehaviour
             }
             else
             {
-                buttonImage.color = Color.white;
+                buttonImage.color = new Color(0.8274511f, 0.882353f, 0.9294118f, 1f);
             }
         }
     }

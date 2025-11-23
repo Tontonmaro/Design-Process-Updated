@@ -44,7 +44,7 @@ public class RewardViewer : MonoBehaviour
         {
             currentModel = Instantiate(reward.rewardPrefab, modelCamera.transform);
             currentModel.transform.localPosition = new Vector3(0, 0, 4f); // adjust distance
-            currentModel.transform.localRotation = Quaternion.identity;
+            //currentModel.transform.localRotation = Quaternion.identity;
         }
     }
 

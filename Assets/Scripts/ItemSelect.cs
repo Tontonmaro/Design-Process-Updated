@@ -52,6 +52,8 @@ public class ItemSelect : MonoBehaviour
 
     public Outline currentOutline;
 
+    private bool ignoreClickThisFrame = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,18 +67,20 @@ public class ItemSelect : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (ignoreClickThisFrame)
+            return;
         if (Input.GetKeyDown(KeyCode.C) && !inMenu)
         {
             enterCart();
         }
-        if(Input.GetKeyDown(KeyCode.T) && !inMenu)
+        if (Input.GetKeyDown(KeyCode.T) && !inMenu)
         {
             tut.openTut();
         }
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitInfo;
 
-        if (isLooking == false)
+        if (isLooking == false && !inMenu)
         {
             if (Physics.Raycast(ray, out hitInfo))
             {
@@ -95,13 +99,13 @@ public class ItemSelect : MonoBehaviour
                             item.GetComponent<Outline>().enabled = true;
                             currentOutline = item.GetComponent<Outline>();
                         }
-                        if (Input.GetMouseButtonDown(0) && !inMenu)
+                        if (Input.GetMouseButtonDown(0) && !inMenu  && item.GetComponent<ItemDetails>() != null)
                         {
                             Cursor.lockState = CursorLockMode.Locked;
                             Cursor.lockState = CursorLockMode.None;
                             isLooking = true;
                             inMenu = true;
-                            itemPrefab = Instantiate(item, new Vector3 (100, 100, 100.5f), Quaternion.identity);
+                            itemPrefab = Instantiate(item, new Vector3 (100, 100, 100.4f), Quaternion.Euler(0, 90, 0));
 
                             infoPanel.gameObject.SetActive(true);
                             infoPanel.DOFade(1f, 0.2f);
@@ -186,6 +190,9 @@ public class ItemSelect : MonoBehaviour
 
     public void exit()
     {
+        ignoreClickThisFrame = true;
+        StartCoroutine(ResetClickBlock());
+
         if (isLooking)
         {
             isLooking = false;
@@ -289,6 +296,8 @@ public class ItemSelect : MonoBehaviour
             Destroy(itemObj);
         }
         buyNowCart.buyNowItems.Clear();
+        cartPanel.alpha = 0;
+        cartPanel.gameObject.SetActive(false);
         boughtNow = false;
         isLooking = false;
         summary.spawned = false;
@@ -419,5 +428,11 @@ public class ItemSelect : MonoBehaviour
             }
         }
         text.text = "$" + total.ToString("F2");
+    }
+
+    IEnumerator ResetClickBlock()
+    {
+        yield return null;    // wait 1 frame
+        ignoreClickThisFrame = false;
     }
 }

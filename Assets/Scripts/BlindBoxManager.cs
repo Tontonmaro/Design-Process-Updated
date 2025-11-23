@@ -24,7 +24,9 @@ public class BlindBoxManager : MonoBehaviour
                 ItemDetails details = cartItem.GetComponent<ItemDetails>();
                 if (details.blindBoxData == null) continue;
 
-                for (int i = 0; i < details.quantity; i++)
+                int rollsPerItem = (details.chosenSize == "Whole Set") ? 9 : 1;
+
+                for (int i = 0; i < details.quantity * rollsPerItem; i++)
                 {
                     var reward = details.blindBoxData.getRandomReward();
                     displayReward(reward);
