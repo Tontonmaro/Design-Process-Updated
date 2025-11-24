@@ -57,6 +57,10 @@ public class CartItemUI : MonoBehaviour
 
         Destroy(linkedItem.gameObject);
         Destroy(gameObject);
+
+        cart.cartItems.RemoveAll(item => item == null);
+        buyNowCart.buyNowItems.RemoveAll(item => item == null);
+
         itemSelect.refreshPrice(itemSelect.totalPriceText);
     }
 

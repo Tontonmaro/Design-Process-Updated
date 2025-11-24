@@ -17,6 +17,11 @@ public class RewardViewer : MonoBehaviour
     private GameObject currentModel;
     private Vector3 lastMousePos;
 
+    public float scrollSpeed = 2f;
+    public float minDistance = 1.5f;
+    public float maxDistance = 7f;
+    public bool invertScroll = false; // set false if your scroll behaves normally
+
     void Start()
     {
         viewerPanel.SetActive(false);
@@ -82,9 +87,21 @@ public class RewardViewer : MonoBehaviour
             currentModel.transform.Rotate(Vector3.right, delta.y * 0.5f, Space.World);
         }
 
-        // Zoom with scroll wheel
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        if (Mathf.Abs(scroll) > 0.01f)
-            currentModel.transform.Translate(Vector3.forward * scroll * 2f);
+        if (Mathf.Abs(scroll) > 0.0001f)
+        {
+            // current distance from camera to model
+            float currentDistance = Vector3.Distance(modelCamera.transform.position, currentModel.transform.position);
+
+            // how much to change distance by this frame
+            // note: positive scroll typically means "scroll forward" (zoom in)
+            float delta = scroll * scrollSpeed * (invertScroll ? -1f : 1f);
+
+            // we want zoom-in to reduce distance, so subtract delta
+            float newDistance = Mathf.Clamp(currentDistance - delta, minDistance, maxDistance);
+
+            // place model along camera forward at the new distance
+            currentModel.transform.position = modelCamera.transform.position + modelCamera.transform.forward * newDistance;
+        }
     }
 }

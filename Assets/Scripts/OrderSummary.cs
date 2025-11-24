@@ -106,7 +106,6 @@ public class OrderSummary : MonoBehaviour
             }
         }
 
-        this.gameObject.SetActive(false);
     }
 
     public void returnToSummary()

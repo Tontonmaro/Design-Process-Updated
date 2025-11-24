@@ -34,6 +34,7 @@ public class ChangeQuantity : MonoBehaviour
         if(itemDetails != null && itemDetails.quantity < 10)
         {
             itemDetails.quantity++;
+            itemSelect.refreshItemPanelPrice();
         }
     }
 
@@ -42,6 +43,7 @@ public class ChangeQuantity : MonoBehaviour
         if (itemDetails != null && itemDetails.quantity > 1)
         {
             itemDetails.quantity--;
+            itemSelect.refreshItemPanelPrice();
         }
     }
 }

@@ -33,7 +33,7 @@ public class SizeSelector : MonoBehaviour
         {
             details.chosenSize = button.GetComponentInChildren<TextMeshProUGUI>().text;
             details.chosenPrice = price;
-            priceText.GetComponent<TextMeshProUGUI>().text = "$" + price.ToString("F2");
+            select.refreshItemPanelPrice();
         }
         for (int i = 0; i < buttons.Count; i++)
         {

@@ -346,6 +346,16 @@ public class ItemSelect : MonoBehaviour
         }
     }
 
+    public void refreshItemPanelPrice()
+    {
+        if (itemPrefab == null) return;
+
+        ItemDetails d = itemPrefab.GetComponent<ItemDetails>();
+        float total = d.chosenPrice * d.quantity;
+
+        price.GetComponent<TextMeshProUGUI>().text = "$" + total.ToString("F2");
+    }
+
     public void refreshPrice(TextMeshProUGUI text)
     {
         float total = 0f;
